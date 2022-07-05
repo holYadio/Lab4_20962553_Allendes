@@ -1,5 +1,8 @@
+import GUI.Ventana;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Ventana f1 = new Ventana();
+        f1.setVisible(true);
     }
 }
