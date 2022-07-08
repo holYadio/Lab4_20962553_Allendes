@@ -1,9 +1,14 @@
 package GUI;
 
+import Model.DobbleGame;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Ventana extends JFrame {
+    public String userName;
     public JPanel panel;
     public Ventana(){
 
@@ -11,7 +16,6 @@ public class Ventana extends JFrame {
         setSize(400, 500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setMinimumSize(new Dimension(350,400));
         this.getContentPane().setBackground(new Color(217, 188, 67));
         initComponent();
     }
@@ -22,37 +26,72 @@ public class Ventana extends JFrame {
     private void colocarPaneles(){
         //Panel
         panel = new JPanel();
-        panel.setBackground(new Color(255, 220, 76));
+        panel.setBackground(new Color(180, 48, 159));
         this.getContentPane().add(panel);
-        //panel1.setLayout(null);
+        panel.setLayout(null);
     }
 
     private void primerosComponents(){
 
         // etiqueta 1
-        JLabel txtInicio = new JLabel("Bienvenido al juego Dobble", SwingConstants.CENTER);
-        txtInicio.setForeground(new Color(0, 0, 0));
-        txtInicio.setFont(new Font("roboto",Font.BOLD,15));
-
+        JLabel etiq1 = new JLabel("Bienvenido al juego Dobble", SwingConstants.CENTER);
+        etiq1.setForeground(new Color(0, 0, 0));
+        etiq1.setFont(new Font("roboto",Font.BOLD,15));
+        etiq1.setBounds(140,10,200,20);
 
         // Instruccion 1
-        JLabel inst1 = new JLabel("Para poder jugar ingrese un nombre de usuario a registrar", SwingConstants.CENTER);
-
+        JLabel etiq2 = new JLabel("Para poder jugar ingrese un nombre de usuario a registrar",SwingConstants.CENTER);
+        etiq2.setFont(new Font("roboto",Font.PLAIN,10));
+        etiq2.setBounds(100, 30, 300,20);
+        JLabel etiq3 = new JLabel("Seleccione el modo que desea jugar:", SwingConstants.CENTER);
         // Espacio para el nuevo usuario
         JTextField nombreUsuario = new JTextField("Nombre de usuario");
+        nombreUsuario.setBounds(180,60,135,25);
 
 
-        // Boton 1
-        JButton boton1 = new JButton();
-        boton1.setText("Registrar");
+
+
+        // Panel decorativo
+        JPanel panel1 = new JPanel();
+        panel1.setBackground(new Color(234, 184, 35));
+        panel1.setBounds(0,0,100,500);
+        panel.add(panel1);
+
+
+        // Boton inicio
+        JButton btnIni = new JButton();
+        btnIni.setText("Registrar");
+        btnIni.setBounds(200,90,100,30);
+        btnIni.setBackground(new Color(255, 255, 255,0));
+
+
+        JButton btnModo1 = new JButton("Stack Mode");
+        JButton btnModo2 = new JButton("CPU Mode");
+        ActionListener oA = new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                Juego crearJuego = new Juego(nombreUsuario.getText());
+                crearJuego.setVisible(true);
+            }
+        };
+        btnIni.addActionListener(oA);
         // Ocupar setEnabled(false); cuando pasemos a la siguiente ventana
 
-        // Boton 2
-        JButton boton2 = new JButton();
+        String s = """
+                Escoja su opcion:
+                1. Registrar jugador
+                2. Jugar
+                3. Visualizar estado completo del juego
+                4. Salir
+                """;
 
-        panel.add(txtInicio);
-        panel.add(inst1);
+        panel.add(etiq1);
+        panel.add(etiq2);
         panel.add(nombreUsuario);
-        panel.add(boton1);
+        panel.add(btnIni);
         }
 }
