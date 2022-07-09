@@ -1,6 +1,5 @@
 package GUI;
 
-import Model.DobbleGame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,12 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Ventana extends JFrame {
-    public String userName;
     public JPanel panel;
     public Ventana(){
 
         super("Dobble Game");
-        setSize(400, 500);
+        setSize(400, 180);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.getContentPane().setBackground(new Color(217, 188, 67));
@@ -43,11 +41,16 @@ public class Ventana extends JFrame {
         JLabel etiq2 = new JLabel("Para poder jugar ingrese un nombre de usuario a registrar",SwingConstants.CENTER);
         etiq2.setFont(new Font("roboto",Font.PLAIN,10));
         etiq2.setBounds(100, 30, 300,20);
-        JLabel etiq3 = new JLabel("Seleccione el modo que desea jugar:", SwingConstants.CENTER);
+
+        ImageIcon imagen = new ImageIcon("logoDobble.png");
+        JLabel etiq3 = new JLabel();
+        etiq3.setBounds(10,5,80,80);
+        etiq3.setIcon(new ImageIcon(imagen.getImage().getScaledInstance(80,80,Image.SCALE_SMOOTH)));
+
         // Espacio para el nuevo usuario
         JTextField nombreUsuario = new JTextField("Nombre de usuario");
         nombreUsuario.setBounds(180,60,135,25);
-
+        panel.add(etiq3);
 
 
 
@@ -62,7 +65,6 @@ public class Ventana extends JFrame {
         JButton btnIni = new JButton();
         btnIni.setText("Registrar");
         btnIni.setBounds(200,90,100,30);
-        btnIni.setBackground(new Color(255, 255, 255,0));
 
 
         JButton btnModo1 = new JButton("Stack Mode");
@@ -91,6 +93,7 @@ public class Ventana extends JFrame {
 
         panel.add(etiq1);
         panel.add(etiq2);
+
         panel.add(nombreUsuario);
         panel.add(btnIni);
         }
