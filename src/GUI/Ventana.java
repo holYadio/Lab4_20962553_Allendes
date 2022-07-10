@@ -66,9 +66,6 @@ public class Ventana extends JFrame {
         btnIni.setText("Registrar");
         btnIni.setBounds(200,90,100,30);
 
-
-        JButton btnModo1 = new JButton("Stack Mode");
-        JButton btnModo2 = new JButton("CPU Mode");
         ActionListener oA = new ActionListener() {
             /**
              * @param e the event to be processed
@@ -76,7 +73,7 @@ public class Ventana extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                Juego crearJuego = new Juego(nombreUsuario.getText());
+                Modo crearJuego = new Modo(nombreUsuario.getText());
                 crearJuego.setVisible(true);
             }
         };
@@ -93,7 +90,6 @@ public class Ventana extends JFrame {
 
         panel.add(etiq1);
         panel.add(etiq2);
-
         panel.add(nombreUsuario);
         panel.add(btnIni);
         }

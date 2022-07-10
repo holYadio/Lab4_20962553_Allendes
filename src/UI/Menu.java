@@ -93,7 +93,7 @@ public class Menu {
                         System.out.println("Ingrese la cantidad de cartas para el mazo\n"
                                 + "Ingrese un 0 o un numero negativo si desea generar el maximo de cartas posibles");
                         int cantCartas = inputInt.nextInt();
-                        DobbleGame game = new DobbleGame(cantJugadores,cantCartas,modo);
+                        DobbleGame game = new DobbleGame(cantJugadores,cantCartas,modo,1,0);
                         game.register(jugador);
                         int opcion3 = 0;
                         while(opcion3 != 4){
@@ -175,7 +175,7 @@ public class Menu {
                                 + "i desea generar el maximo de cartas posibles"
                                 + "");
                         int cantCartas = inputInt.nextInt();
-                        DobbleGame game = new DobbleGame(2,cantCartas,modo);
+                        DobbleGame game = new DobbleGame(2,cantCartas,modo,2,0);
                         game.register("CPU 1");
                         game.register("CPU 2");
                         game.play(1);

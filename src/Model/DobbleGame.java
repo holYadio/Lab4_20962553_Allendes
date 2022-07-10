@@ -23,58 +23,30 @@ public class DobbleGame implements IDobbleGame {
      * @param cantCartas cantidad de cartas del mazo
      * @param modo modo de juego
      */
-    public DobbleGame(int cantJugadores, int cantCartas, String modo) {
+    public DobbleGame(int cantJugadores, int cantCartas, String modo,int numOpcion,int numElementos) {
         Scanner entrada = new Scanner(System.in);
         List<Player> jugadores = new ArrayList<>();
         List<String> elementos = new ArrayList<>();
         int cantElementosTotal = 0;
         boolean continuacion = true;
-        while(continuacion){
-            System.out.println("Ingrese una opcion para la lista de elementos:\n "
-                    + "1. Ingresar una lista de elementos\n "
-                    + "2. Ocupar una lista de numeros (ingresar el maximo num)\n "
-                    + "3. Ocupar lista de letras con 13 elementos (Maximo 4 elementos por carta)");
-            int numOpcion = entrada.nextInt();
-            if (numOpcion == 1){
-                System.out.println("Cual es la cantidad de elementos que desea ingresar: ");
-                cantElementosTotal = entrada.nextInt();
-                for(int i = 0; i < cantElementosTotal; i++){
-                    System.out.println("Ingrese el elemente "+ (i+1) +':');
-                    Scanner elemento = new Scanner(System.in);
-                    String element = elemento.nextLine();
-                    elementos.add(element);
-                }
-                continuacion = false;
-            } else if(numOpcion == 2){
-                System.out.println("Ingresar el maximo de la lista: ");
-                cantElementosTotal = entrada.nextInt();
-                for(int i = 1; i <= cantElementosTotal; i++){
-                    String strI = i + "";
-                    elementos.add(strI);
-                }
 
-                continuacion = false;
-            } else if(numOpcion == 3){
-                elementos.add("a");
-                elementos.add("b");
-                elementos.add("c");
-                elementos.add("d");
-                elementos.add("e");
-                elementos.add("f");
-                elementos.add("g");
-                elementos.add("h");
-                elementos.add("i");
-                elementos.add("j");
-                elementos.add("k");
-                elementos.add("l");
-                elementos.add("m");
-                continuacion = false;
-            } else{
-                System.out.println("Ingrese una opcion valida");
+
+        if (numOpcion == 1){
+            System.out.println("Cual es la cantidad de elementos que desea ingresar: ");
+            cantElementosTotal = entrada.nextInt();
+            for(int i = 0; i < cantElementosTotal; i++){
+                System.out.println("Ingrese el elemente "+ (i+1) +':');
+                Scanner elemento = new Scanner(System.in);
+                String element = elemento.nextLine();
+                elementos.add(element);
+            }
+        } else if(numOpcion == 2){
+            cantElementosTotal = cantCartas;
+            for(int i = 1; i <= cantElementosTotal; i++){
+                String strI = i + "";
+                elementos.add(strI);
             }
         }
-        System.out.println("Ingrese la cantidad de elementos por carta");
-        int numElementos = entrada.nextInt();
         this.cantPlayers = cantJugadores;
         this.players = jugadores;
         this.dobble = new Dobble(numElementos, cantCartas, elementos);
@@ -181,7 +153,7 @@ public class DobbleGame implements IDobbleGame {
      */
     @Override
     public void play(int i){
-        if("stackmode".equals(mode.toLowerCase())){
+        if("User vs User".equals(mode)){
             switch (i) {
                 case 1:
                     Scanner entrada = new Scanner(System.in);
@@ -258,7 +230,7 @@ public class DobbleGame implements IDobbleGame {
                     System.out.println("Ingrese una opcion Correcta\n");
                     break;
             }
-        }else if("demomode".equals(mode.toLowerCase())){
+        }else if("Demo Mode".equals(mode)){
             while(dobble.getCardsSet().size() > 1){
                 if(CardsMesa.isEmpty()){
                     int x = dobble.numCards();
