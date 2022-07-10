@@ -1,4 +1,5 @@
 package Model;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -323,7 +324,13 @@ public class DobbleGame implements IDobbleGame {
         for(int i = 0; i < CardsMesa.size();i++){
             texto += CardsMesa.get(i).toString() + "\n";
         }
-        texto += this.whoseTurnIsIt();
+        try{
+            texto += this.whoseTurnIsIt();
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("No tiene suficientes Jugadores");
+        }
+
         return texto;
     }
 

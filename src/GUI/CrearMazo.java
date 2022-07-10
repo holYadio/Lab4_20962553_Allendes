@@ -1,5 +1,7 @@
 package GUI;
 
+import Model.DobbleGame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -61,8 +63,16 @@ public class CrearMazo extends JFrame{
         btnCrearJuego1.setBounds(230,70,130,25);
         ActionListener accionBtn1 = e -> {
         setVisible(false);
-        Juego f = new Juego(userName,mode);
-        f.setVisible(true);
+        if (mode== "User vs User"){
+            Juego f = new Juego(userName,mode);
+            f.setVisible(true);
+        }else if(mode== "Demo Mode"){
+            DobbleGame dg = new DobbleGame(2,57,"Demo Mode",2,7);
+            dg.register("CPU 1");
+            dg.register("CPU 2");
+            JugarJuego f = new JugarJuego(dg,userName);
+            f.setVisible(true);
+        }
         };
         btnCrearJuego1.addActionListener(accionBtn1);
 

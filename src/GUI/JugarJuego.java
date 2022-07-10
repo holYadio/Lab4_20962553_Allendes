@@ -7,22 +7,22 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Juego extends JFrame {
-    public String username;
+public class JugarJuego extends JFrame {
     public DobbleGame dobbleGame;
+    public String userName;
     public JPanel panel;
-    public Juego(String nombreUsuario,String modo){
+    public JugarJuego(DobbleGame dg, String nombreUsuario){
         super("Dobble Game");
         setSize(400, 300);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.getContentPane().setBackground(new Color(217, 188, 67));
-        this.dobbleGame = new DobbleGame(2,57, modo,2,0);
-        this.username = nombreUsuario;
-        dobbleGame.register(nombreUsuario);
-        initComponent();
+        this.dobbleGame = dg;
+        this.userName = nombreUsuario;
+        initComponent1();
     }
-    private void initComponent() {
+
+    private void initComponent1() {
         colocarPaneles();
         colocarLabels();
         colocarBotones();
@@ -35,7 +35,7 @@ public class Juego extends JFrame {
     }
 
     private void colocarLabels() {
-        JLabel etiq1 = new JLabel("Bienvenido " + username, SwingConstants.CENTER);
+        JLabel etiq1 = new JLabel("Bienvenido " + userName, SwingConstants.CENTER);
         etiq1.setForeground(new Color(0, 0, 0));
         etiq1.setFont(new Font("roboto",Font.BOLD,15));
         etiq1.setBounds(150,10,200,20);
@@ -57,8 +57,8 @@ public class Juego extends JFrame {
 
     private void colocarBotones() {
         // Boton crear juego predeterminado
-        JButton btnCrearJuego1 = new JButton("Registrar Player");
-        btnCrearJuego1.setBounds(185,70,130,25);
+        JButton btnJugarJuego1 = new JButton("Registrar Player");
+        btnJugarJuego1.setBounds(185,70,130,25);
         ActionListener accionBtn1 = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -68,11 +68,14 @@ public class Juego extends JFrame {
         };
 
         // Boton crear juego personalizado
-        JButton btnCrearJuego2 = new JButton("Jugar");
-        btnCrearJuego2.setBounds(185,110,130,25);
+        JButton btnJugarJuego2 = new JButton("Siguiente Jugada");
+        btnJugarJuego2.setBounds(185,110,130,25);
 
-        JButton btnCrearJuego3 = new JButton("Visualizar juego");
-        btnCrearJuego3.setBounds(185,150,130,25);
+        JButton btnJugarJuego3 = new JButton("Visualizar juego");
+        btnJugarJuego3.setBounds(185,150,130,25);
+        ActionListener accionBtnJugarJuego3 = e -> new StatusGame(dobbleGame).setVisible(true);
+        btnJugarJuego3.addActionListener(accionBtnJugarJuego3);
+
         // Boton para Salir
         JButton btnSalir = new JButton("Salir");
         btnSalir.setBounds(185,190,130,25);
@@ -89,14 +92,14 @@ public class Juego extends JFrame {
         btnBack.setIcon(new ImageIcon(imagen2.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH)));
         ActionListener AccionVolver = e -> {
             setVisible(false);
-            CrearMazo lastF = new CrearMazo(username,dobbleGame.getMode());
+            CrearMazo lastF = new CrearMazo(userName,dobbleGame.getMode());
             lastF.setVisible(true);
         };
         btnBack.addActionListener(AccionVolver);
 
-        panel.add(btnCrearJuego1);
-        panel.add(btnCrearJuego2);
-        panel.add(btnCrearJuego3);
+        panel.add(btnJugarJuego1);
+        panel.add(btnJugarJuego2);
+        panel.add(btnJugarJuego3);
         panel.add(btnSalir);
         panel.add(btnBack);
     }
@@ -109,5 +112,4 @@ public class Juego extends JFrame {
         this.getContentPane().add(panel);
         panel.setLayout(null);
     }
-
 }
