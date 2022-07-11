@@ -17,6 +17,8 @@ public class DobbleGame implements IDobbleGame {
     private String mode;
     private int turnoPlayer;
     private List<Card> CardsMesa;
+    private String elementSelected;
+    private String ganador;
 
     /**
      * Constructor del juego
@@ -29,8 +31,6 @@ public class DobbleGame implements IDobbleGame {
         List<Player> jugadores = new ArrayList<>();
         List<String> elementos = new ArrayList<>();
         int cantElementosTotal = 0;
-        boolean continuacion = true;
-
 
         if (numOpcion == 1){
             System.out.println("Cual es la cantidad de elementos que desea ingresar: ");
@@ -41,6 +41,7 @@ public class DobbleGame implements IDobbleGame {
                 String element = elemento.nextLine();
                 elementos.add(element);
             }
+
         } else if(numOpcion == 2){
             cantElementosTotal = cantCartas;
             for(int i = 1; i <= cantElementosTotal; i++){
@@ -54,6 +55,7 @@ public class DobbleGame implements IDobbleGame {
         this.mode = modo;
         this.turnoPlayer = 1;
         this.CardsMesa = new ArrayList<>();
+        this.elementSelected=null;
     }
 
     //          GETTERS          //
@@ -104,6 +106,10 @@ public class DobbleGame implements IDobbleGame {
     public List<Card> getCardsMesa() {
         return CardsMesa;
     }
+
+    public String getElementSelected(){ return elementSelected; }
+
+    public String getGanador() { return ganador; }
 
     //              Metodos Auxiliares              //
     /**
@@ -232,79 +238,86 @@ public class DobbleGame implements IDobbleGame {
                     break;
             }
         }else if("Demo Mode".equals(mode)){
-            while(dobble.getCardsSet().size() > 1){
-                if(CardsMesa.isEmpty()){
-                    int x = dobble.numCards();
-                    System.out.println("Cartas en mesa");
-                    System.out.println(dobble.nthCard(x-1));
-                    System.out.println(dobble.nthCard(x-2));
-                    CardsMesa.add(dobble.nthCard(x-1));
-                    CardsMesa.add(dobble.nthCard(x-2));
-                    dobble.deleteCard(x);
-                    dobble.deleteCard(x-1);
-
-                }
-                for(int j = 0; j < dobble.nthCard(0).size();j++){
-                    String element = CardsMesa.get(0).getCard().get(j);
-                    if ((CardsMesa.get(0).existeElemento(element)) &&
-                            (CardsMesa.get(1).existeElemento(element))){
-                        System.out.println("El elemento que selecciona " +
-                                players.get(turnoPlayer - 1).getNombre() + " es: "
-                                + element + ". \n");
-                        players.get(turnoPlayer - 1).getMazoPlayer().add(CardsMesa.get(0));
-                        players.get(turnoPlayer - 1).getMazoPlayer().add(CardsMesa.get(1));
-
-                        int puntos = players.get(turnoPlayer - 1).getPuntos() + 2;
-                        players.get(turnoPlayer - 1).setPuntos(puntos);
-
-                    }
-                }
-                if(players.size() == turnoPlayer){
+            if(dobble.getCardsSet().size() > 1){
+                if (players.size() == turnoPlayer) {
                     turnoPlayer = 1;
-                }else{
+                } else {
                     turnoPlayer += 1;
                 }
-                CardsMesa.remove(1);
-                CardsMesa.remove(0);
-            }
-            Player temp;
-            for(int k = 1;k < (players.size());k++){
-                for (int j = 0 ; j < (players.size() - 1); j++){
-                    if(players.get(j).getPuntos() > players.get(j+1).getPuntos()){
-                        temp = players.get(j);
-                        players.set(j, players.get(j+1)) ;
-                        players.set(j + 1, temp);
+
+            }else {
+                Player temp;
+                for (int k = 1; k < (players.size()); k++) {
+                    for (int j = 0; j < (players.size() - 1); j++) {
+                        if (players.get(j).getPuntos() > players.get(j + 1).getPuntos()) {
+                            temp = players.get(j);
+                            players.set(j, players.get(j + 1));
+                            players.set(j + 1, temp);
+                        }
                     }
                 }
-            }
-            if(players.get(players.size()-1).getPuntos()== players.get(players.size()-2).getPuntos()){
-                int empate =0;
-                int maximo = players.get(players.size()-1).getPuntos();
-                for(int j = players.size()-2; j >= 0; j--){
-                    if (players.get(j).getPuntos() == maximo){
-                        empate++;
+
+                if (players.get(players.size() - 1).getPuntos() == players.get(players.size() - 2).getPuntos()) {
+                    int empate = 0;
+                    int maximo = players.get(players.size() - 1).getPuntos();
+                    for (int j = players.size() - 2; j >= 0; j--) {
+                        if (players.get(j).getPuntos() == maximo) {
+                            empate++;
+                        }
                     }
-                }
-                if(empate == players.size()-1){
-                    System.out.println("Es un empate entre los jugadores\n");
-                }else {
-                    String ganadores = players.get(players.size()-1).getNombre();
-                    while(empate > 0){
-                        int z = players.size()-2;
-                        ganadores += " ," + players.get(z).getNombre();
-                        z--;
-                        empate--;
+                    if (empate == players.size() - 1) {
+                        ganador = ("Es un empate entre las CPUs\n");
+                    } else {
+                        String ganadores = players.get(players.size() - 1).getNombre();
+                        while (empate > 0) {
+                            int z = players.size() - 2;
+                            ganadores += " ," + players.get(z).getNombre();
+                            z--;
+                            empate--;
+                        }
+                        ganador = ("Los ganadores son :" + ganadores
+                                + ".\n");
                     }
-                    System.out.println("Los ganadores son :" + ganadores
-                            + ".\n");
+                } else {
+                    ganador = ("El ganador es " +
+                            players.get(players.size() - 1).getNombre() + ".\n");
                 }
-            }else{
-                System.out.println("El ganador es " +
-                        players.get(players.size()-1).getNombre()+".\n");
             }
-        }else{
-            System.out.println("Modo de juego invalido o no esta implementado\n");
         }
+    }
+
+    public void ponerCartasEnMesa(){
+        if(CardsMesa.isEmpty()){
+
+            int x = dobble.numCards();
+            CardsMesa.add(dobble.nthCard(x-1));
+            CardsMesa.add(dobble.nthCard(x-2));
+            CardsMesa.get(0).setId(1);
+            CardsMesa.get(1).setId(2);
+            dobble.deleteCard(x);
+            dobble.deleteCard(x-1);
+
+        }
+    }
+    
+    public void jugadaDemoMode(){
+        for(int j = 0; j < dobble.nthCard(0).size();j++){
+            String element = CardsMesa.get(0).getCard().get(j);
+            if ((CardsMesa.get(0).existeElemento(element)) &&
+                    (CardsMesa.get(1).existeElemento(element))){
+                elementSelected = ("El elemento que selecciona \n" +
+                        players.get(turnoPlayer - 1).getNombre() + " es: \n"
+                        + element + '.');
+                players.get(turnoPlayer - 1).getMazoPlayer().add(CardsMesa.get(0));
+                players.get(turnoPlayer - 1).getMazoPlayer().add(CardsMesa.get(1));
+
+                int puntos = players.get(turnoPlayer - 1).getPuntos() + 2;
+                players.get(turnoPlayer - 1).setPuntos(puntos);
+
+            }
+        }
+        CardsMesa.remove(1);
+        CardsMesa.remove(0);
     }
 
     /**
@@ -350,4 +363,6 @@ public class DobbleGame implements IDobbleGame {
                 getDobble().equals(that.getDobble()) && getMode().equals(that.getMode()) &&
                 Objects.equals(getCardsMesa(), that.getCardsMesa());
     }
+
+
 }

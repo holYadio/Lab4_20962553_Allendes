@@ -22,8 +22,8 @@ public class StatusGame extends JFrame{
     private void initComponent() {
         colocarPaneles();
         colocarLabels();
-        colocarBotones();
         colocarAreaDeTexto();
+        colocarBotones();
 
         //Panel decorativo
         JPanel panel1 = new JPanel();
@@ -43,27 +43,16 @@ public class StatusGame extends JFrame{
 
 
     private void colocarBotones() {
-        // Boton para Salir
-        JButton btnSalir = new JButton("Salir");
-        btnSalir.setBounds(200,470,130,25);
-        ActionListener accionBtnSalir = e -> dispose();
-        btnSalir.addActionListener(accionBtnSalir);
-
         // Boton para volver al menu anterior
         ImageIcon imagen2 = new ImageIcon("back.png");
         JButton btnBack = new JButton();
-        btnBack.setBounds(450,10,30,30);
+        btnBack.setBounds(200,420,30,30);
         btnBack.setOpaque(false);
         btnBack.setContentAreaFilled(false);
         btnBack.setBorderPainted(false);
         btnBack.setIcon(new ImageIcon(imagen2.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH)));
-        ActionListener AccionVolver = e -> {
-            setVisible(false);
-            Modo lastF = new Modo(dobbleGame.getPlayers().get(0).getNombre());
-            lastF.setVisible(true);
-        };
+        ActionListener AccionVolver = e -> dispose();
         btnBack.addActionListener(AccionVolver);
-        panel.add(btnSalir);
         panel.add(btnBack);
     }
 
@@ -81,11 +70,14 @@ public class StatusGame extends JFrame{
         JTextArea txt1 = new JTextArea();
         txt1.setText(dobbleGame.toString());
         txt1.setEditable(false);
+        txt1.setBounds(110,10,260,400);
+        txt1.setOpaque(false);
         JScrollPane scroll = new JScrollPane(txt1);
-        scroll.setBounds(100,10,260,450);
+        scroll.setBounds(110,10,260,400);
         scroll.setFont(new Font("roboto",Font.PLAIN,13));
         scroll.setForeground(new Color(0, 0, 0));
         scroll.setEnabled(false);
+        scroll.setOpaque(false);
         panel.add(scroll);
     }
 }

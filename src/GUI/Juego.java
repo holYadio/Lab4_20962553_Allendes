@@ -17,7 +17,7 @@ public class Juego extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.getContentPane().setBackground(new Color(217, 188, 67));
-        this.dobbleGame = new DobbleGame(2,57, modo,2,0);
+        this.dobbleGame = new DobbleGame(2,57, modo,2,8);
         this.username = nombreUsuario;
         dobbleGame.register(nombreUsuario);
         initComponent();
@@ -76,7 +76,7 @@ public class Juego extends JFrame {
         // Boton para Salir
         JButton btnSalir = new JButton("Salir");
         btnSalir.setBounds(185,190,130,25);
-        ActionListener accionBtnSalir = e -> dispose();
+        ActionListener accionBtnSalir = e -> System.exit(0);
         btnSalir.addActionListener(accionBtnSalir);
 
         // Boton para volver al menu anterior

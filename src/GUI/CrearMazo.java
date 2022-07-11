@@ -62,12 +62,12 @@ public class CrearMazo extends JFrame{
         JButton btnCrearJuego1 = new JButton("Predeterminado");
         btnCrearJuego1.setBounds(230,70,130,25);
         ActionListener accionBtn1 = e -> {
-        setVisible(false);
+        dispose();
         if (mode== "User vs User"){
             Juego f = new Juego(userName,mode);
             f.setVisible(true);
         }else if(mode== "Demo Mode"){
-            DobbleGame dg = new DobbleGame(2,57,"Demo Mode",2,7);
+            DobbleGame dg = new DobbleGame(2,57,"Demo Mode",2,8);
             dg.register("CPU 1");
             dg.register("CPU 2");
             JugarJuego f = new JugarJuego(dg,userName);
@@ -83,7 +83,7 @@ public class CrearMazo extends JFrame{
         // Boton para Salir
         JButton btnSalir = new JButton("Salir");
         btnSalir.setBounds(230,150,130,25);
-        ActionListener accionBtnSalir = e -> dispose();
+        ActionListener accionBtnSalir = e -> System.exit(0);
         btnSalir.addActionListener(accionBtnSalir);
 
         // Boton para volver al menu anterior

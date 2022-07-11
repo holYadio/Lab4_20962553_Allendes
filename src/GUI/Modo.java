@@ -75,7 +75,7 @@ public class Modo extends JFrame {
         // Boton para Salir
         JButton btnSalir = new JButton("Salir");
         btnSalir.setBounds(180,160,130,25);
-        ActionListener AccionBtnSalir = e -> dispose();
+        ActionListener AccionBtnSalir = e -> System.exit(0);
         btnSalir.addActionListener(AccionBtnSalir);
 
         // Boton para volver al menu anterior

@@ -25,14 +25,6 @@ public class Card implements ICard {
 
     //          GETTERS         //
     /**
-     * Metodo para obtener la id de la carta
-     * @return Id
-     */
-    public int getId(){
-        return id;
-    }
-
-    /**
      * Metodo para obtener la lista de elementos que compone la carta
      * @return elementos de la carta
      */
@@ -111,6 +103,19 @@ public class Card implements ICard {
         }
         if (o == null || getClass() != o.getClass()) return false;
         return false;
+    }
+    /**
+     * Crea una representacion de la carta como String
+     * @return retorna la representacion como string de la carta
+     */
+
+    public String toString2(){
+        String texto = "Carta " + id + " : \n       ";
+        for(int i = 0; i < (card.size() - 1); i++){
+            texto += card.get(i) + "\n       ";
+        }
+        texto += card.get((card.size()-1));
+        return texto;
     }
 
     /**

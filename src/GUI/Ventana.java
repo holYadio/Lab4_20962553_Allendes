@@ -80,14 +80,6 @@ public class Ventana extends JFrame {
         btnIni.addActionListener(oA);
         // Ocupar setEnabled(false); cuando pasemos a la siguiente ventana
 
-        String s = """
-                Escoja su opcion:
-                1. Registrar jugador
-                2. Jugar
-                3. Visualizar estado completo del juego
-                4. Salir
-                """;
-
         panel.add(etiq1);
         panel.add(etiq2);
         panel.add(nombreUsuario);
