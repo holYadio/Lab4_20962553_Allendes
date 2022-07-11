@@ -9,9 +9,9 @@ import java.util.Objects;
  */
 public class Player implements IPlayer {
     //          ATRIBUTOS         //
-    private String nombre;
-    private int id;
-    private List<Card> mazoPlayer;
+    private final String nombre;
+    private final int id;
+    private final List<Card> mazoPlayer;
     private int puntos;
 
     /**
@@ -82,13 +82,13 @@ public class Player implements IPlayer {
      */
     @Override
     public String toString() {
-        String texto = "Jugador " + id + ": " + nombre + "\n";
-        texto += "El mazo del jugador es: \n";
-        for (int i = 0; i < (mazoPlayer.size()); i++) {
-            texto += mazoPlayer.get(i).toString() + "\n";
+        StringBuilder texto = new StringBuilder("Jugador " + id + ": " + nombre + "\n");
+        texto.append("El mazo del jugador es: \n");
+        for (Card card : mazoPlayer) {
+            texto.append(card.toString()).append("\n");
         }
-        texto += "El jugador tiene un puntaje de " + puntos + "\n";
-        return texto;
+        texto.append("El jugador tiene un puntaje de ").append(puntos).append("\n");
+        return texto.toString();
     }
 
     /**

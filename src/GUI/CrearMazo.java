@@ -4,8 +4,9 @@ import Model.DobbleGame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CrearMazo extends JFrame{
     public String userName;
@@ -16,6 +17,7 @@ public class CrearMazo extends JFrame{
         setSize(500, 300);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(false);
         this.userName = nombreUsuario;
         this.mode = modo;
         initComponent();
@@ -62,23 +64,33 @@ public class CrearMazo extends JFrame{
         JButton btnCrearJuego1 = new JButton("Predeterminado");
         btnCrearJuego1.setBounds(230,70,130,25);
         ActionListener accionBtn1 = e -> {
-        dispose();
-        if (mode== "User vs User"){
-            Juego f = new Juego(userName,mode);
-            f.setVisible(true);
-        }else if(mode== "Demo Mode"){
-            DobbleGame dg = new DobbleGame(2,57,"Demo Mode",2,8);
-            dg.register("CPU 1");
-            dg.register("CPU 2");
-            JugarJuego f = new JugarJuego(dg,userName);
-            f.setVisible(true);
-        }
+            dispose();
+            List<String> elementos = new ArrayList<>();
+            for(int i = 1; i <= 57; i++) {
+                String strI = i + "";
+                elementos.add(strI);
+            }
+            DobbleGame dg = new DobbleGame(2,55,mode,8,elementos);
+            if (mode.equals("User vs User")){
+                Juego f = new Juego(userName,dg);
+                f.setVisible(true);
+            }else if(mode.equals("Demo Mode")){
+                dg.register("CPU 1");
+                dg.register("CPU 2");
+                JugarJuego f = new JugarJuego(dg,userName);
+                f.setVisible(true);
+            }
         };
         btnCrearJuego1.addActionListener(accionBtn1);
 
         // Boton crear juego personalizado
         JButton btnCrearJuego2 = new JButton("Personalizado");
         btnCrearJuego2.setBounds(230,110,130,25);
+        ActionListener accionBtn2 = e -> {
+            new MazoPerso(userName,mode).setVisible(true);
+            dispose();
+        };
+        btnCrearJuego2.addActionListener(accionBtn2);
 
         // Boton para Salir
         JButton btnSalir = new JButton("Salir");
@@ -95,16 +107,30 @@ public class CrearMazo extends JFrame{
         btnBack.setBorderPainted(false);
         btnBack.setIcon(new ImageIcon(imagen2.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH)));
         ActionListener AccionVolver = e -> {
-            setVisible(false);
+            dispose();
             Modo lastF = new Modo(userName);
             lastF.setVisible(true);
         };
         btnBack.addActionListener(AccionVolver);
 
+        ImageIcon imagen3 = new ImageIcon("home.png");
+        JButton btnHome = new JButton();
+        btnHome.setBounds(450,45,30,30);
+        btnHome.setOpaque(false);
+        btnHome.setContentAreaFilled(false);
+        btnHome.setBorderPainted(false);
+        btnHome.setIcon(new ImageIcon(imagen3.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH)));
+        ActionListener AccionHome = e -> {
+            dispose();
+            new Ventana().setVisible(true);
+        };
+        btnHome.addActionListener(AccionHome);
+        panel.add(btnHome);
         panel.add(btnCrearJuego1);
         panel.add(btnCrearJuego2);
         panel.add(btnSalir);
         panel.add(btnBack);
+
     }
 
 
@@ -121,8 +147,8 @@ public class CrearMazo extends JFrame{
     private void colocarAreaDeTexto(){
         JTextArea txt1 = new JTextArea();
         txt1.setText("""
-                el mazo predeterminado es de 57 cartas
-                con 7 elementos por carta, los elementos
+                el mazo predeterminado es de 55 cartas
+                con 8 elementos por carta, los elementos
                 corresponden a numeros""");
         txt1.setFont(new Font("roboto",Font.BOLD,13));
         txt1.setBounds(180,190,240,60);

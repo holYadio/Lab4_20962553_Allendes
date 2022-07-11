@@ -14,6 +14,7 @@ public class Ventana extends JFrame {
         setSize(400, 180);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(false);
         this.getContentPane().setBackground(new Color(217, 188, 67));
         initComponent();
     }
@@ -47,6 +48,7 @@ public class Ventana extends JFrame {
         etiq3.setBounds(10,5,80,80);
         etiq3.setIcon(new ImageIcon(imagen.getImage().getScaledInstance(80,80,Image.SCALE_SMOOTH)));
 
+
         // Espacio para el nuevo usuario
         JTextField nombreUsuario = new JTextField("Nombre de usuario");
         nombreUsuario.setBounds(180,60,135,25);
@@ -72,9 +74,14 @@ public class Ventana extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                Modo crearJuego = new Modo(nombreUsuario.getText());
-                crearJuego.setVisible(true);
+                if(nombreUsuario.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "ERROR: El nombre de usuario esta vacio",
+                            "Dobble Game", JOptionPane.ERROR_MESSAGE);
+                }else{
+                    setVisible(false);
+                    Modo crearJuego = new Modo(nombreUsuario.getText());
+                    crearJuego.setVisible(true);
+                }
             }
         };
         btnIni.addActionListener(oA);

@@ -92,7 +92,19 @@ public class Modo extends JFrame {
             ventana.setVisible(true);
         };
         btnBack.addActionListener(AccionVolver);
-
+        ImageIcon imagen3 = new ImageIcon("home.png");
+        JButton btnHome = new JButton();
+        btnHome.setBounds(350,45,30,30);
+        btnHome.setOpaque(false);
+        btnHome.setContentAreaFilled(false);
+        btnHome.setBorderPainted(false);
+        btnHome.setIcon(new ImageIcon(imagen3.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH)));
+        ActionListener AccionHome = e -> {
+            dispose();
+            new Ventana().setVisible(true);
+        };
+        btnHome.addActionListener(AccionHome);
+        panel.add(btnHome);
         panel.add(btnModo1);
         panel.add(btnModo2);
         panel.add(btnSalir);

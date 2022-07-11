@@ -9,8 +9,8 @@ import java.util.Objects;
  */
 public class Dobble implements IDobble {
     //          ATRIBUTOS         //
-    private List<Card> cardsSet;
-    private List<String> listaElementos;
+    private final List<Card> cardsSet;
+    private final List<String> listaElementos;
 
     /**
      * Constructor del set de cartas
@@ -101,7 +101,7 @@ public class Dobble implements IDobble {
     /**
      * Obtiene la carta en la posicion n-1 entregada
      * @param n posicion de la carta que se desea encontrar
-     * @return carta en la posicion seï¿½alada
+     * @return carta en la posicion señalada
      */
     @Override
     public Card nthCard(int n) {
@@ -109,18 +109,15 @@ public class Dobble implements IDobble {
     }
 
     /**
-     * verifica si es o no un juego dobble valido
+     * verifica si es o no un juego dobble válido
      * @return booleano que comprueba si es o no un set de cartas valido
      */
     @Override
     public boolean Isdobble(){
-        int x = 0;
         for(int i = 0; i < (cardsSet.size() - 1);i++){
             for(int j = i+1; j < cardsSet.size();j++)
                 if(cardsSet.get(i).verificarCarta(cardsSet.get(j).getCard())){
                     return false;
-                } else {
-                    x++;
                 }
         }
         return true;
@@ -149,7 +146,7 @@ public class Dobble implements IDobble {
 
     /**
      * Calcula la cantidad de elementos necesarios para generar un set de cartas
-     * valido
+     * válido
      * @param cartaMuestra carta de muestra
      * @return cantidad de elementos necesarios para generar el conjunto valido
      */
@@ -162,12 +159,12 @@ public class Dobble implements IDobble {
     /**
      * compara si la carta existe dentro del set de cartas a comparar
      * @param carta carta a comparar
-     * @return booleano que verufuca la existencia de la carta
+     * @return booleano que verífica la existencia de la carta
      */
     @Override
     public boolean perteneceCard(Card carta){
-        for(int j = 0; j < cardsSet.size();j++){
-            if(carta.verificarCarta(cardsSet.get(j).getCard())){
+        for (Card card : cardsSet) {
+            if (carta.verificarCarta(card.getCard())) {
                 return true;
             }
         }
@@ -180,10 +177,9 @@ public class Dobble implements IDobble {
      */
     @Override
     public List<Card> missingCards(){
-        ArrayList<Card> cardsFaltantes = new ArrayList<>();
         Dobble mazoCompleto = new Dobble(cardsSet.get(0).size(),0,listaElementos);
-        for(int i = 0; i < cardsSet.size(); i++){
-            mazoCompleto.getCardsSet().remove(cardsSet.get(i));
+        for (Card card : cardsSet) {
+            mazoCompleto.getCardsSet().remove(card);
         }
         for(int i = 0; i < mazoCompleto.getCardsSet().size();i++){
             mazoCompleto.getCardsSet().get(i).setId(i+1);
@@ -193,7 +189,7 @@ public class Dobble implements IDobble {
 
     /**
      * Elimina la n carta
-     * @param n Numero de la carta que se desea eliminar
+     * @param n Número de la carta que se desea eliminar
      */
     @Override
     public void deleteCard(int n){
@@ -206,16 +202,16 @@ public class Dobble implements IDobble {
      */
     @Override
     public String toString() {
-        String texto = "El cardsSet tiene las cartas:\n";
-        for (int i = 0; i < (cardsSet.size()); i++) {
-            texto += cardsSet.get(i).toString() + "\n";
+        StringBuilder texto = new StringBuilder("El cardsSet tiene las cartas:\n");
+        for (Card card : cardsSet) {
+            texto.append(card.toString()).append("\n");
         }
-        return texto;
+        return texto.toString();
     }
 
     /**
      * comprueba si dos dobble son iguales
-     * @param o
+     * @param o CardsSet a comparar
      * @return booleano de si es igual o no dos set de cartas
      */
     @Override

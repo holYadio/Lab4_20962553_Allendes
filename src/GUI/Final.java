@@ -2,6 +2,7 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class Final extends JFrame {
     public String ganador;
@@ -11,6 +12,7 @@ public class Final extends JFrame {
         setSize(500, 150);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(false);
         this.getContentPane().setBackground(new Color(217, 188, 67));
         this.ganador = winner;
         initComponent1();
@@ -18,6 +20,20 @@ public class Final extends JFrame {
     private void initComponent1() {
         colocarPaneles();
         colocarLabels();
+
+        ImageIcon imagen3 = new ImageIcon("home.png");
+        JButton btnHome = new JButton();
+        btnHome.setBounds(450,10,30,30);
+        btnHome.setOpaque(false);
+        btnHome.setContentAreaFilled(false);
+        btnHome.setBorderPainted(false);
+        btnHome.setIcon(new ImageIcon(imagen3.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH)));
+        ActionListener AccionHome = e -> {
+            dispose();
+            new Ventana().setVisible(true);
+        };
+        btnHome.addActionListener(AccionHome);
+        panel.add(btnHome);
 
         //Panel decorativo
         JPanel panel1 = new JPanel();

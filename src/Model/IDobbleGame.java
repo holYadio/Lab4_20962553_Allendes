@@ -5,6 +5,6 @@ public interface IDobbleGame {
 
     String whoseTurnIsIt();
 
-    void play(int i);
+    void play(int i,String entrada);
 }
 

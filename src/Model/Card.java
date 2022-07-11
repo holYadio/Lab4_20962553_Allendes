@@ -1,5 +1,7 @@
 package Model;
 import java.util.List;
+import java.util.Objects;
+
 /**
  *
  * @author Jhoisan Allendes Fuentes
@@ -9,7 +11,7 @@ import java.util.List;
 
 public class Card implements ICard {
     //          ATRIBUTOS         //
-    private List<String> card;
+    private final List<String> card;
     private int id;
 
 
@@ -44,7 +46,7 @@ public class Card implements ICard {
 
     //          METODOS AUXILIARES          //
     /**
-     * Comprueba si una lista esta dento de los elementos de la carta
+     * Comprueba si una lista esta dentro de los elementos de la carta
      * @param cardComp lista a comprobar
      * @return existe la lista en la carta
      */
@@ -57,21 +59,18 @@ public class Card implements ICard {
                     x++;
                 }
         }
-        if(x < cardComp.size()){
-            return false;
-        }
-        return true;
+        return x >= cardComp.size();
     }
 
     /**
-     * Comprueba la existencia de algun elemento en la carta
-     * @param elemento
+     * Comprueba la existencia de algún elemento en la carta
+     * @param elemento elemento al cual se le verifica la existencia
      * @return booleano que comprueba la existencia del elemento en la carta
      */
     @Override
     public boolean existeElemento(String elemento){
-        for(int i = 0; i < card.size();i++){
-            if(card.get(i) == null ? elemento == null : card.get(i).equals(elemento)){
+        for (String s : card) {
+            if (Objects.equals(s, elemento)) {
                 return true;
             }
         }
@@ -96,12 +95,11 @@ public class Card implements ICard {
     @Override
     public boolean equals(Object o) {
         Card card1 = (Card) o;
-        for(int i = 0; i < card.size(); i ++){
-            if (card1.existeElemento(card.get(i))){
+        for (String s : card) {
+            if (card1.existeElemento(s)) {
                 return true;
             }
         }
-        if (o == null || getClass() != o.getClass()) return false;
         return false;
     }
     /**
@@ -110,12 +108,12 @@ public class Card implements ICard {
      */
 
     public String toString2(){
-        String texto = "Carta " + id + " : \n       ";
+        StringBuilder texto = new StringBuilder("Carta " + id + " : \n       ");
         for(int i = 0; i < (card.size() - 1); i++){
-            texto += card.get(i) + "\n       ";
+            texto.append(card.get(i)).append("\n       ");
         }
-        texto += card.get((card.size()-1));
-        return texto;
+        texto.append(card.get((card.size() - 1)));
+        return texto.toString();
     }
 
     /**
@@ -124,12 +122,12 @@ public class Card implements ICard {
      */
     @Override
     public String toString() {
-        String texto = "Carta " + id + " : ";
+        StringBuilder texto = new StringBuilder("Carta " + id + " : ");
         for(int i = 0; i < (card.size() - 1); i++){
-            texto += card.get(i) + ", ";
+            texto.append(card.get(i)).append(", ");
         }
-        texto += card.get((card.size()-1)) + '.';
-        return texto;
+        texto.append(card.get((card.size() - 1))).append('.');
+        return texto.toString();
     }
 
 }

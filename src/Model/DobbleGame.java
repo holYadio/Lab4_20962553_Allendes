@@ -1,5 +1,4 @@
 package Model;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -11,14 +10,15 @@ import java.util.Scanner;
  */
 public class DobbleGame implements IDobbleGame {
     //          ATRIBUTOS           //
-    private int cantPlayers;
-    private List<Player> players;
-    private Dobble dobble;
-    private String mode;
+    private final int cantPlayers;
+    private final List<Player> players;
+    private final Dobble dobble;
+    private final String mode;
     private int turnoPlayer;
-    private List<Card> CardsMesa;
+    private final List<Card> CardsMesa;
     private String elementSelected;
     private String ganador;
+    private int error;
 
     /**
      * Constructor del juego
@@ -26,29 +26,9 @@ public class DobbleGame implements IDobbleGame {
      * @param cantCartas cantidad de cartas del mazo
      * @param modo modo de juego
      */
-    public DobbleGame(int cantJugadores, int cantCartas, String modo,int numOpcion,int numElementos) {
+    public DobbleGame(int cantJugadores, int cantCartas, String modo,int numElementos,List<String> elementos) {
         Scanner entrada = new Scanner(System.in);
         List<Player> jugadores = new ArrayList<>();
-        List<String> elementos = new ArrayList<>();
-        int cantElementosTotal = 0;
-
-        if (numOpcion == 1){
-            System.out.println("Cual es la cantidad de elementos que desea ingresar: ");
-            cantElementosTotal = entrada.nextInt();
-            for(int i = 0; i < cantElementosTotal; i++){
-                System.out.println("Ingrese el elemente "+ (i+1) +':');
-                Scanner elemento = new Scanner(System.in);
-                String element = elemento.nextLine();
-                elementos.add(element);
-            }
-
-        } else if(numOpcion == 2){
-            cantElementosTotal = cantCartas;
-            for(int i = 1; i <= cantElementosTotal; i++){
-                String strI = i + "";
-                elementos.add(strI);
-            }
-        }
         this.cantPlayers = cantJugadores;
         this.players = jugadores;
         this.dobble = new Dobble(numElementos, cantCartas, elementos);
@@ -107,9 +87,13 @@ public class DobbleGame implements IDobbleGame {
         return CardsMesa;
     }
 
+
     public String getElementSelected(){ return elementSelected; }
 
+
     public String getGanador() { return ganador; }
+
+    public int getError() { return error; }
 
     //              Metodos Auxiliares              //
     /**
@@ -118,29 +102,27 @@ public class DobbleGame implements IDobbleGame {
      */
     @Override
     public void register(String namePlayer){
+        error = 0;
         int existe = 0;
-        if(players.isEmpty()){
-            Player player = new Player(namePlayer,1);
-            players.add(player);
-        } else{
-            if(players.size()< cantPlayers){
-                for(int i = 0; i < players.size();i++){
-                    if(namePlayer == players.get(i).getNombre()){
-                        existe ++;
-                        System.out.println(namePlayer);
-                        System.out.println(players.get(i).getNombre());
+        if(namePlayer.isEmpty()) {
+            error =2;
+        }else{
+            if (players.isEmpty()) {
+                Player player = new Player(namePlayer, 1);
+                players.add(player);
+            } else {
+                for (Player value : players) {
+                    if (Objects.equals(namePlayer, value.getNombre())) {
+                        existe++;
                     }
                 }
-                if(existe == 1){
-                    System.out.println("ERROR: El usuario ya esta registrado");
-                }else{
-                    Player player = new Player(namePlayer,players.size()+1);
+                if (existe == 0) {
+                    Player player = new Player(namePlayer, players.size() + 1);
                     players.add(player);
+                } else {
+                    error = 1;
                 }
-            } else{
-                System.out.println("ERROR: Ya se encuentra el maximo de jugadores para este juego");
             }
-
         }
     }
 
@@ -159,93 +141,73 @@ public class DobbleGame implements IDobbleGame {
      * @param i opcion del juego que desean realizar
      */
     @Override
-    public void play(int i){
+    public void play(int i,String entrada){
         if("User vs User".equals(mode)){
             switch (i) {
-                case 1:
-                    Scanner entrada = new Scanner(System.in);
-                    System.out.println("Ingrese el elemento que se comparte:\n");
-                    String element = entrada.nextLine();
+                case 1 -> {
+                    String element = entrada;
                     if ((CardsMesa.get(0).existeElemento(element)) &&
-                            (CardsMesa.get(1).existeElemento(element))){
+                            (CardsMesa.get(1).existeElemento(element))) {
+                        CardsMesa.get(0).setId(players.get(turnoPlayer-1).getMazoPlayer().size()+1);
                         players.get(turnoPlayer - 1).getMazoPlayer().add(CardsMesa.get(0));
+                        CardsMesa.get(1).setId(players.get(turnoPlayer-1).getMazoPlayer().size()+1);
                         players.get(turnoPlayer - 1).getMazoPlayer().add(CardsMesa.get(1));
                         CardsMesa.remove(1);
                         CardsMesa.remove(0);
                         int puntos = players.get(turnoPlayer - 1).getPuntos() + 2;
                         players.get(turnoPlayer - 1).setPuntos(puntos);
-                        System.out.println("El elemento en comun es correcto\n");
-                    }else{
-                        System.out.println("El elemento no esta en las dos cart"
-                                + "as");
+                        error = 3;
+                    } else {
+                        error = 4;
                     }
-                    if(players.size() == turnoPlayer){
+                    if (players.size() == turnoPlayer) {
                         turnoPlayer = 1;
-                    }else{
+                    } else {
                         turnoPlayer += 1;
                     }
-                    break;
+                }
                 //Pass
-                case 2:
-                    if(players.size() == turnoPlayer){
+                case 2 -> {
+                    if (players.size() == turnoPlayer) {
                         turnoPlayer = 1;
-                    }else{
+                    } else {
                         turnoPlayer += 1;
                     }
-                    System.out.println("Ha pasado el turno");
-                    break;
+                }
                 //Finish
-                case 3:
+                case 3 -> {
                     Player temp;
-                    for(int k = 1;k < (players.size());k++){
-                        for (int j = 0 ; j < (players.size() - 1); j++){
-                            if(players.get(j).getPuntos() > players.get(j+1).getPuntos()){
+                    for (int k = 1; k < (players.size()); k++) {
+                        for (int j = 0; j < (players.size() - 1); j++) {
+                            if (players.get(j).getPuntos() > players.get(j + 1).getPuntos()) {
                                 temp = players.get(j);
-                                players.set(j, players.get(j+1)) ;
+                                players.set(j, players.get(j + 1));
                                 players.set(j + 1, temp);
                             }
                         }
                     }
-                    if(players.get(players.size()-1).getPuntos()== players.get(players.size()-2).getPuntos()){
-                        int empate =0;
-                        int maximo = players.get(players.size()-1).getPuntos();
-                        for(int j = players.size()-2; j >= 0; j--){
-                            if (players.get(j).getPuntos() == maximo){
+                    if (players.get(players.size() - 1).getPuntos() == players.get(players.size() - 2).getPuntos()) {
+                        int empate = 0;
+                        int maximo = players.get(players.size() - 1).getPuntos();
+                        for (int j = players.size() - 2; j >= 0; j--) {
+                            if (players.get(j).getPuntos() == maximo) {
                                 empate++;
                             }
                         }
-                        if(empate == players.size()-1){
-                            System.out.println("Es un empate entre los jugadores\n");
-                        }else {
-                            String ganadores = players.get(players.size()-1).getNombre();
-                            while(empate > 0){
-                                int z = players.size()-2;
-                                ganadores += " ," + players.get(z).getNombre();
-                                z--;
-                                empate--;
-                            }
-                            System.out.println("Los ganadores son :" + ganadores
-                                    + ".\n");
+                        if (empate == players.size() - 1) {
+                            ganador = ("Es un empate entre los jugadores\n");
                         }
-                    }else{
-                        System.out.println("El ganador es " +
-                                players.get(players.size()-1).getNombre()+".\n");
+                    } else {
+                        ganador = ("El ganador es " + players.get(players.size() - 1).getNombre() + ".\n");
                     }
-
-                    break;
-                default:
-                    System.out.println("Ingrese una opcion Correcta\n");
-                    break;
+                }
             }
         }else if("Demo Mode".equals(mode)){
-            if(dobble.getCardsSet().size() > 1){
-                if (players.size() == turnoPlayer) {
-                    turnoPlayer = 1;
-                } else {
-                    turnoPlayer += 1;
-                }
-
-            }else {
+            if(i != 1){
+                this.ponerCartasEnMesa();
+                this.jugadaDemoMode();
+            }
+            if((i == 1) || (dobble.numCards()<= 1)){
                 Player temp;
                 for (int k = 1; k < (players.size()); k++) {
                     for (int j = 0; j < (players.size() - 1); j++) {
@@ -256,31 +218,17 @@ public class DobbleGame implements IDobbleGame {
                         }
                     }
                 }
-
                 if (players.get(players.size() - 1).getPuntos() == players.get(players.size() - 2).getPuntos()) {
-                    int empate = 0;
-                    int maximo = players.get(players.size() - 1).getPuntos();
-                    for (int j = players.size() - 2; j >= 0; j--) {
-                        if (players.get(j).getPuntos() == maximo) {
-                            empate++;
-                        }
-                    }
-                    if (empate == players.size() - 1) {
-                        ganador = ("Es un empate entre las CPUs\n");
-                    } else {
-                        String ganadores = players.get(players.size() - 1).getNombre();
-                        while (empate > 0) {
-                            int z = players.size() - 2;
-                            ganadores += " ," + players.get(z).getNombre();
-                            z--;
-                            empate--;
-                        }
-                        ganador = ("Los ganadores son :" + ganadores
-                                + ".\n");
-                    }
+                    ganador = ("Es un empate entre las CPUs\n");
+                }else {
+                    ganador = ("El ganador es " + players.get(players.size() - 1).getNombre() + ".\n");
+                }
+            }else {
+
+                if (players.size() == turnoPlayer) {
+                    turnoPlayer = 1;
                 } else {
-                    ganador = ("El ganador es " +
-                            players.get(players.size() - 1).getNombre() + ".\n");
+                    turnoPlayer += 1;
                 }
             }
         }
@@ -288,7 +236,6 @@ public class DobbleGame implements IDobbleGame {
 
     public void ponerCartasEnMesa(){
         if(CardsMesa.isEmpty()){
-
             int x = dobble.numCards();
             CardsMesa.add(dobble.nthCard(x-1));
             CardsMesa.add(dobble.nthCard(x-2));
@@ -296,7 +243,6 @@ public class DobbleGame implements IDobbleGame {
             CardsMesa.get(1).setId(2);
             dobble.deleteCard(x);
             dobble.deleteCard(x-1);
-
         }
     }
     
@@ -308,12 +254,13 @@ public class DobbleGame implements IDobbleGame {
                 elementSelected = ("El elemento que selecciona \n" +
                         players.get(turnoPlayer - 1).getNombre() + " es: \n"
                         + element + '.');
+                CardsMesa.get(0).setId(players.get(turnoPlayer-1).getMazoPlayer().size()+1);
                 players.get(turnoPlayer - 1).getMazoPlayer().add(CardsMesa.get(0));
+                CardsMesa.get(1).setId(players.get(turnoPlayer-1).getMazoPlayer().size()+1);
                 players.get(turnoPlayer - 1).getMazoPlayer().add(CardsMesa.get(1));
 
                 int puntos = players.get(turnoPlayer - 1).getPuntos() + 2;
                 players.get(turnoPlayer - 1).setPuntos(puntos);
-
             }
         }
         CardsMesa.remove(1);
@@ -326,25 +273,24 @@ public class DobbleGame implements IDobbleGame {
      */
     @Override
     public String toString(){
-        String texto = " El modo de juegos es: " + mode
+        StringBuilder texto = new StringBuilder(" El modo de juegos es: " + mode
                 + "\n" + dobble.toString()
                 + "\nLa cantidad de Jugadores es: " + cantPlayers
-                + "\nLos jugadores son: \n";
-        for(int i =0;i<players.size();i++){
-            texto += players.get(i).toString() + "\n";
+                + "\nLos jugadores son: \n");
+        for (Player player : players) {
+            texto.append(player.toString()).append("\n");
         }
-        texto += "Las cartas en mesa son: \n";
-        for(int i = 0; i < CardsMesa.size();i++){
-            texto += CardsMesa.get(i).toString() + "\n";
+        texto.append("Las cartas en mesa son: \n");
+        for (Card card : CardsMesa) {
+            texto.append(card.toString()).append("\n");
         }
         try{
-            texto += this.whoseTurnIsIt();
+            texto.append(this.whoseTurnIsIt());
         }catch (Exception e){
-            e.printStackTrace();
-            System.out.println("No tiene suficientes Jugadores");
+            error = 5;
         }
 
-        return texto;
+        return texto.toString();
     }
 
     /**
@@ -363,6 +309,7 @@ public class DobbleGame implements IDobbleGame {
                 getDobble().equals(that.getDobble()) && getMode().equals(that.getMode()) &&
                 Objects.equals(getCardsMesa(), that.getCardsMesa());
     }
+
 
 
 }

@@ -4,29 +4,28 @@ import Model.DobbleGame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class JugarJuego extends JFrame {
     public DobbleGame dobbleGame;
     public String userName;
     public JPanel panel;
-    public JTextArea txt1;
-    public JTextArea txt2;
-    public JTextArea txt3;
-    public JTextArea txt4;
-    public JTextArea txt5;
-    public JLabel etiq2;
+    public JTextField elementoUser;
+
     public JugarJuego(DobbleGame dg, String nombreUsuario){
         super("Dobble Game");
-        setSize(500, 600);
+        setSize(500, 350);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(false);
         this.getContentPane().setBackground(new Color(217, 188, 67));
         this.dobbleGame = dg;
         this.userName = nombreUsuario;
         initComponent1();
+
+        
     }
+
 
     private void initComponent1() {
         colocarPaneles();
@@ -37,7 +36,7 @@ public class JugarJuego extends JFrame {
         //Panel decorativo
         JPanel panel1 = new JPanel();
         panel1.setBackground(new Color(234, 184, 35));
-        panel1.setBounds(0,0,100,600);
+        panel1.setBounds(0,0,100,350);
         panel.add(panel1);
     }
 
@@ -48,7 +47,7 @@ public class JugarJuego extends JFrame {
         etiq1.setBounds(10,5,80,80);
         etiq1.setIcon(new ImageIcon(imagen.getImage().getScaledInstance(80,80,Image.SCALE_SMOOTH)));
 
-        etiq2 = new JLabel(dobbleGame.whoseTurnIsIt(),SwingConstants.CENTER);
+        JLabel etiq2 = new JLabel(dobbleGame.whoseTurnIsIt(),SwingConstants.CENTER);
         etiq2.setForeground(new Color(0, 0, 0));
         etiq2.setFont(new Font("roboto",Font.BOLD,15));
         etiq2.setBounds(150,10,300,20);
@@ -57,6 +56,13 @@ public class JugarJuego extends JFrame {
         etiq3.setForeground(new Color(0, 0, 0));
         etiq3.setFont(new Font("roboto",Font.PLAIN,14));
         etiq3.setBounds(150,35,300,20);
+        if(dobbleGame.getMode().equals("User vs User")){
+            JLabel etiq4 = new JLabel("Ingrese el elemento en comun:");
+            etiq4.setForeground(new Color(0, 0, 0));
+            etiq4.setFont(new Font("roboto",Font.PLAIN,14));
+            etiq4.setBounds(200,100,220,20);
+            panel.add(etiq4);
+        }
 
         panel.add(etiq1);
         panel.add(etiq2);
@@ -75,107 +81,185 @@ public class JugarJuego extends JFrame {
         panel.setLayout(null);
     }
     private void colocarAreaDeTexto(){
-        dobbleGame.ponerCartasEnMesa();
-        txt1 = new JTextArea();
+        if( dobbleGame.getDobble().numCards() >1){
+            dobbleGame.ponerCartasEnMesa();
+        }
+
+        JTextArea txt1 = new JTextArea();
         txt1.setText(dobbleGame.getCardsMesa().get(0).toString2());
         txt1.setFont(new Font("roboto",Font.BOLD,13));
         txt1.setBounds(130,60,100,150);
         txt1.setOpaque(false);
         txt1.setEditable(false);
 
-        txt2 = new JTextArea();
+        JTextArea txt2 = new JTextArea();
         txt2.setText(dobbleGame.getCardsMesa().get(1).toString2());
         txt2.setFont(new Font("roboto",Font.BOLD,13));
         txt2.setBounds(400,60,100,150);
         txt2.setOpaque(false);
         txt2.setEditable(false);
 
-        txt3 = new JTextArea();
+        JTextArea txt3 = new JTextArea();
         txt3.setEditable(false);
         txt3.setOpaque(false);
         txt3.setText("Quedan "+ dobbleGame.getDobble().numCards()+ " en el mazo");
         txt3.setFont(new Font("roboto",Font.PLAIN,13));
         txt3.setBounds(240,70,150,20);
+        
+        
 
-        txt4 = new JTextArea();
-        txt4.setOpaque(false);
-        txt4.setBounds(200,100,200,60);
+        if(dobbleGame.getMode().equals("Demo Mode")){
+            JTextArea txt4 = new JTextArea();
+            txt4.setText(dobbleGame.getElementSelected());
+            txt4.setOpaque(false);
+            txt4.setBounds(200,100,200,60);
 
-        txt5 = new JTextArea();
-        txt5.setText(dobbleGame.getPlayers().get(dobbleGame.getTurnoPlayer()-1).toString());
-        txt5.setEditable(false);
-        txt5.setBounds(130,215,260,400);
-        txt5.setOpaque(false);
-        JScrollPane scroll = new JScrollPane(txt5);
-        scroll.setBounds(130,220,320,280);
-        scroll.setFont(new Font("roboto",Font.PLAIN,13));
-        scroll.setForeground(new Color(0, 0, 0));
-        scroll.setEnabled(false);
-        scroll.setOpaque(false);
+            JTextArea txt5 = new JTextArea();
+            txt5.setText(dobbleGame.getPlayers().get(dobbleGame.getTurnoPlayer() - 1).toString());
+            txt5.setEditable(false);
+            txt5.setBounds(130, 215, 260, 400);
+            txt5.setOpaque(false);
+            JScrollPane scroll = new JScrollPane(txt5);
+            scroll.setBounds(130, 220, 320, 280);
+            scroll.setFont(new Font("roboto", Font.PLAIN, 13));
+            scroll.setForeground(new Color(0, 0, 0));
+            scroll.setEnabled(false);
+            scroll.setOpaque(false);
+            panel.add(scroll);
+            panel.add(txt4);
+        } else if (dobbleGame.getMode().equals("User vs User")) {
+            elementoUser = new JTextField();
+            elementoUser.setBounds(240,130,100,20);
+            elementoUser.setOpaque(false);
+            panel.add(elementoUser);
+        }
+
         panel.add(txt1);
         panel.add(txt2);
         panel.add(txt3);
-        panel.add(scroll);
+
+
 
     }
     private void colocarBotones() {
-        // Boton crear juego predeterminado
-        JButton btnJugarJuego1 =  new JButton("Siguiente Jugada");
-        btnJugarJuego1.setBounds(115,510,135,25);
-        ActionListener accionBtnJugar1 = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (dobbleGame.getDobble().getCardsSet().size() >1){
-                    panel.add(txt4);
-                    panel.revalidate();
-                    dobbleGame.ponerCartasEnMesa();
-                    etiq2.setText(dobbleGame.whoseTurnIsIt());
-                    txt1.setText(dobbleGame.getCardsMesa().get(0).toString2());
-                    txt2.setText(dobbleGame.getCardsMesa().get(1).toString2());
-                    txt3.setText("Quedan " + dobbleGame.getDobble().numCards() + " en el mazo");
-                    txt4.setText(dobbleGame.getElementSelected());
-                    txt5.setText(dobbleGame.getPlayers().get(dobbleGame.getTurnoPlayer() - 1).toString());
-                    dobbleGame.jugadaDemoMode();
-                    dobbleGame.play(0);
-                }else{
+        if(dobbleGame.getMode().equals("Demo Mode")){
+            // Boton crear juego predeterminado
+            JButton btnJugarJuego1 = new JButton("Siguiente Jugada");
+            btnJugarJuego1.setBounds(115, 510, 135, 25);
+            ActionListener accionBtnJugar1 = e -> {
+                dobbleGame.play(0, "");
+                if (dobbleGame.getDobble().getCardsSet().size() > 1) {
+                    dispose();
+                    new JugarJuego(dobbleGame, userName).setVisible(true);
+                } else {
                     Final f = new Final(dobbleGame.getGanador());
                     setVisible(false);
                     f.setVisible(true);
                 }
 
-            }
-        };
-        btnJugarJuego1.addActionListener(accionBtnJugar1);
+            };
+            btnJugarJuego1.addActionListener(accionBtnJugar1);
 
-        JButton btnJugarJuego2 = new JButton("Visualizar juego");
-        btnJugarJuego2.setBounds(260,510,125,25);
-        ActionListener accionBtnJugarJuego3 = e -> new StatusGame(dobbleGame).setVisible(true);
-        btnJugarJuego2.addActionListener(accionBtnJugarJuego3);
+            JButton btnJugarJuego2 = new JButton("Visualizar juego");
+            btnJugarJuego2.setBounds(255, 510, 125, 25);
+            ActionListener accionBtnJugarJuego3 = e -> new StatusGame(dobbleGame).setVisible(true);
+            btnJugarJuego2.addActionListener(accionBtnJugarJuego3);
 
-        // Boton para Salir
-        JButton btnSalir = new JButton("Salir");
-        btnSalir.setBounds(395,510,60,25);
-        ActionListener accionBtnSalir = e -> System.exit(0);
-        btnSalir.addActionListener(accionBtnSalir);
+            // Boton para Salir
+            JButton btnSalir = new JButton("Finalizar");
+            btnSalir.setBounds(390, 510, 90, 25);
+            ActionListener accionBtnSalir = e -> {
+                dobbleGame.play(1, "");
+                new Final(dobbleGame.getGanador()).setVisible(true);
+                dispose();
+            };
+            btnSalir.addActionListener(accionBtnSalir);
+
+            panel.add(btnJugarJuego1);
+            panel.add(btnJugarJuego2);
+            panel.add(btnSalir);
+        } else if (dobbleGame.getMode().equals("User vs User")) {
+            JButton btnJugar1 = new JButton("Jugar");
+            btnJugar1.setBounds(140, 230, 135, 25);
+            ActionListener accionBtnJugar1 = e -> {
+
+                dobbleGame.play(1,elementoUser.getText());
+                if(dobbleGame.getError() == 3){
+                    JOptionPane.showMessageDialog(null,"Es un elemento comun entre las cartas","Dobble Game",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else if (dobbleGame.getError() == 4) {
+                    JOptionPane.showMessageDialog(null,"No es un elemento comun entre las cartas","Dobble Game",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+                if(dobbleGame.getDobble().numCards() > 1) {
+                    new JugarJuego(dobbleGame, userName).setVisible(true);
+                    dispose();
+                }else{
+                    dobbleGame.play(3,"");
+                    new Final(dobbleGame.getGanador()).setVisible(true);
+                    dispose();
+                }
+            };
+            btnJugar1.addActionListener(accionBtnJugar1);
+
+            JButton btnJugar2 = new JButton("Pasar");
+            btnJugar2.setBounds(300, 230, 135, 25);
+            ActionListener accionBtnJugar2 = e -> {
+                dobbleGame.play(2,"");
+                JOptionPane.showMessageDialog(null,"Ha pasado el turno","Dobble Game",
+                        JOptionPane.INFORMATION_MESSAGE);
+                new JugarJuego(dobbleGame,userName).setVisible(true);
+                dispose();
+            };
+            btnJugar2.addActionListener(accionBtnJugar2);
+
+            JButton btnJugar3 = new JButton("Visualizar juego");
+            btnJugar3.setBounds(140, 265, 135, 25);
+            ActionListener accionBtnJugar3 = e -> new StatusGame(dobbleGame).setVisible(true);
+            btnJugar3.addActionListener(accionBtnJugar3);
+
+            JButton btnJugar4 = new JButton("Finalizar");
+            btnJugar4.setBounds(300, 265, 135, 25);
+            ActionListener accionBtnJugar4 = e -> {
+                dobbleGame.play(3,"");
+                new Final(dobbleGame.getGanador()).setVisible(true);
+                dispose();
+            };
+            btnJugar4.addActionListener(accionBtnJugar4);
+
+            panel.add(btnJugar1);
+            panel.add(btnJugar2);
+            panel.add(btnJugar3);
+            panel.add(btnJugar4);
+        }
 
         // Boton para volver al menu anterior
         ImageIcon imagen2 = new ImageIcon("back.png");
         JButton btnBack = new JButton();
-        btnBack.setBounds(450,10,30,30);
+        btnBack.setBounds(450, 10, 30, 30);
         btnBack.setOpaque(false);
         btnBack.setContentAreaFilled(false);
         btnBack.setBorderPainted(false);
-        btnBack.setIcon(new ImageIcon(imagen2.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH)));
+        btnBack.setIcon(new ImageIcon(imagen2.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
         ActionListener AccionVolver = e -> {
             setVisible(false);
-            CrearMazo lastF = new CrearMazo(userName,dobbleGame.getMode());
+            CrearMazo lastF = new CrearMazo(userName, dobbleGame.getMode());
             lastF.setVisible(true);
         };
         btnBack.addActionListener(AccionVolver);
-
-        panel.add(btnJugarJuego1);
-        panel.add(btnJugarJuego2);
-        panel.add(btnSalir);
+        ImageIcon imagen3 = new ImageIcon("home.png");
+        JButton btnHome = new JButton();
+        btnHome.setBounds(450,45,30,30);
+        btnHome.setOpaque(false);
+        btnHome.setContentAreaFilled(false);
+        btnHome.setBorderPainted(false);
+        btnHome.setIcon(new ImageIcon(imagen3.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH)));
+        ActionListener AccionHome = e -> {
+            dispose();
+            new Ventana().setVisible(true);
+        };
+        btnHome.addActionListener(AccionHome);
+        panel.add(btnHome);
         panel.add(btnBack);
     }
 }
