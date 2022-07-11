@@ -87,12 +87,22 @@ public class DobbleGame implements IDobbleGame {
         return CardsMesa;
     }
 
-
+    /**
+     * Obtiene el elemento que selecciona la cpu
+     * @return elemento que selecciona la cpu
+     */
     public String getElementSelected(){ return elementSelected; }
 
-
+    /**
+     * Obtiene el ganador del juego
+     * @return Ganador del juego
+     */
     public String getGanador() { return ganador; }
 
+    /**
+     * Obtiene el error que se produce
+     * @return error que se produce
+     */
     public int getError() { return error; }
 
     //              Metodos Auxiliares              //
@@ -234,6 +244,9 @@ public class DobbleGame implements IDobbleGame {
         }
     }
 
+    /**
+     * Funcion que pone 2 cartas en la mesa
+     */
     public void ponerCartasEnMesa(){
         if(CardsMesa.isEmpty()){
             int x = dobble.numCards();
@@ -245,7 +258,10 @@ public class DobbleGame implements IDobbleGame {
             dobble.deleteCard(x-1);
         }
     }
-    
+
+    /**
+     * Funcion que realiza la jugada en el modo demo
+     */
     public void jugadaDemoMode(){
         for(int j = 0; j < dobble.nthCard(0).size();j++){
             String element = CardsMesa.get(0).getCard().get(j);

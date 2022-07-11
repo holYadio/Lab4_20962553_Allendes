@@ -15,6 +15,12 @@ public class MazoPerso extends JFrame {
     public JTextField txt1;
     public JTextField txt2;
     public JTextField txt3;
+
+    /**
+     * Constructor del Frame
+     * @param nombreUsuario nombre de usuario
+     * @param modo partida creada
+     */
     public MazoPerso(String nombreUsuario,String modo){
         super("Dobble Game");
         setSize(500, 300);
@@ -26,6 +32,10 @@ public class MazoPerso extends JFrame {
         this.mode = modo;
         initComponent();
     }
+
+    /**
+     * Coloca los componenetes en el frame
+     */
     private void initComponent() {
         colocarPaneles();
         colocarLabels();
@@ -38,7 +48,9 @@ public class MazoPerso extends JFrame {
         panel1.setBounds(0,0,100,300);
         panel.add(panel1);
     }
-
+    /**
+     * Coloca los paneles en el frame
+     */
     private void colocarPaneles(){
         //Panel Principal
         panel = new JPanel();
@@ -47,6 +59,9 @@ public class MazoPerso extends JFrame {
         panel.setLayout(null);
     }
 
+    /**
+     * Coloca los botones en el panel
+     */
     private void colocarBotones() {
         JButton btnCrear = new JButton("Crear Dobble");
         btnCrear.setBounds(200,200,130,25);
@@ -70,10 +85,14 @@ public class MazoPerso extends JFrame {
                             (cantidadCartas <= (((numElementos-1)*(numElementos-1))+numElementos)))) &&
                             (elementos.size() >= (((numElementos-1)*(numElementos-1))+numElementos))){
                         DobbleGame dg = new DobbleGame(2,cantidadCartas,mode,numElementos,elementos);
-                        new Juego(userName,dg).setVisible(true);
+                        if(mode.equals("User vs User")) {
+                            new Juego(userName, dg).setVisible(true);
+                        }else{
+                            dg.register("CPU 1");
+                            dg.register("CPU 2");
+                            new JugarJuego(dg,userName).setVisible(true);
+                        }
                         dispose();
-                        System.out.println(numElementos);
-                        System.out.println(((((numElementos-1)*(numElementos-1))+numElementos)));
                     }else {
                         JOptionPane.showMessageDialog(null, "ERROR: No cumple la cantidad minima de elementos o el numeros de cartas",
                                 "Dobble Game", JOptionPane.ERROR_MESSAGE);
@@ -119,6 +138,9 @@ public class MazoPerso extends JFrame {
         panel.add(btnBack);
     }
 
+    /**
+     * Coloca las areas de texto en el panel
+     */
     private void colocarAreaDeTexto() {
         txt1 = new JTextField();
         txt1.setBounds(320,30,100,25);
@@ -143,6 +165,9 @@ public class MazoPerso extends JFrame {
         panel.add(txt4);
     }
 
+    /**
+     * Coloca los Labels en el panel
+     */
     private void colocarLabels() {
         JLabel etiq1 = new JLabel("Ingrese la cantidad de cartas:");
         etiq1.setForeground(new Color(0, 0, 0));
@@ -164,7 +189,6 @@ public class MazoPerso extends JFrame {
         etiq4.setForeground(new Color(0, 0, 0));
         etiq4.setFont(new Font("roboto",Font.BOLD,13));
         etiq4.setBounds(120,110,200,20);
-
 
         panel.add(etiq1);
         panel.add(etiq2);

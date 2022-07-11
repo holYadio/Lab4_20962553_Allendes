@@ -11,6 +11,12 @@ public class Juego extends JFrame {
     public DobbleGame dobbleGame;
     public JPanel panel;
     public JTextField txt1;
+
+    /**
+     * Constructor del frame
+     * @param nombreUsuario nombre de usuario
+     * @param dg partida creada
+     */
     public Juego(String nombreUsuario,DobbleGame dg){
         super("Dobble Game");
         setSize(400, 300);
@@ -26,7 +32,9 @@ public class Juego extends JFrame {
             initComponent2();
         }
     }
-
+    /**
+     * Coloca los componenetes al frame
+     */
     private void initComponent() {
         colocarPaneles();
         colocarLabels();
@@ -39,6 +47,9 @@ public class Juego extends JFrame {
         panel1.setBounds(0,0,100,300);
         panel.add(panel1);
     }
+    /**
+     * Coloca los componenetes en el frame
+     */
     private void initComponent2() {
         colocarPaneles();
         colocarLabels();
@@ -51,6 +62,9 @@ public class Juego extends JFrame {
         panel.add(panel1);
     }
 
+    /**
+     * Coloca los labels en el panel
+     */
     private void colocarLabels() {
         JLabel etiq1 = new JLabel("Bienvenido " + username, SwingConstants.CENTER);
         etiq1.setForeground(new Color(0, 0, 0));
@@ -72,14 +86,14 @@ public class Juego extends JFrame {
             etiq3.setFont(new Font("roboto",Font.BOLD,13));
             etiq3.setBounds(185,40,220,20);
         }
-
-
         panel.add(etiq1);
         panel.add(etiq2);
         panel.add(etiq3);
     }
 
-
+    /**
+     * Coloca los botones en el panel
+     */
     private void colocarBotones() {
         // Boton crear juego predeterminado
         JButton btnCrearJuego1 = new JButton("Registrar Player");
@@ -141,6 +155,10 @@ public class Juego extends JFrame {
         panel.add(btnSalir);
         panel.add(btnBack);
     }
+
+    /**
+     * Coloca los botnoes en el panel
+     */
     private void colocarBotones2(){
         // Boton crear juego personalizado
         JButton btnCrearJuego2 = new JButton("Jugar");
@@ -194,7 +212,9 @@ public class Juego extends JFrame {
         panel.add(btnBack);
     }
 
-
+    /**
+     * Coloca los paneles en el frame
+     */
     private void colocarPaneles(){
         //Panel Principal
         panel = new JPanel();
@@ -203,6 +223,9 @@ public class Juego extends JFrame {
         panel.setLayout(null);
     }
 
+    /**
+     * Coloca los textFields en el panel
+     */
     private void colocarTextFiel(){
         txt1 = new JTextField();
         txt1.setBounds(185,80,130,25);

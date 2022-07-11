@@ -8,8 +8,10 @@ import java.awt.event.ActionListener;
 
 public class Ventana extends JFrame {
     public JPanel panel;
+    /**
+     * Constructor del frame
+     */
     public Ventana(){
-
         super("Dobble Game");
         setSize(400, 180);
         setLocationRelativeTo(null);
@@ -18,10 +20,17 @@ public class Ventana extends JFrame {
         this.getContentPane().setBackground(new Color(217, 188, 67));
         initComponent();
     }
+
+    /**
+     * Coloca los componentes en el frame
+     */
     private void  initComponent() {
         colocarPaneles();
         primerosComponents();
     }
+    /**
+     * Coloca los paneles en el frame
+     */
     private void colocarPaneles(){
         //Panel
         panel = new JPanel();
@@ -29,7 +38,9 @@ public class Ventana extends JFrame {
         this.getContentPane().add(panel);
         panel.setLayout(null);
     }
-
+    /**
+     * Coloca los componenetes en el panel
+     */
     private void primerosComponents(){
 
         // etiqueta 1
@@ -50,7 +61,7 @@ public class Ventana extends JFrame {
 
 
         // Espacio para el nuevo usuario
-        JTextField nombreUsuario = new JTextField("Nombre de usuario");
+        JTextField nombreUsuario = new JTextField();
         nombreUsuario.setBounds(180,60,135,25);
         panel.add(etiq3);
 
@@ -85,7 +96,6 @@ public class Ventana extends JFrame {
             }
         };
         btnIni.addActionListener(oA);
-        // Ocupar setEnabled(false); cuando pasemos a la siguiente ventana
 
         panel.add(etiq1);
         panel.add(etiq2);

@@ -2,12 +2,16 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Modo extends JFrame {
     public String userName;
     public JPanel panel;
+
+    /**
+     * Constructor del frame
+     * @param nombreUsuario nombre de usuario que se registrara
+     */
     public Modo(String nombreUsuario){
         super("Dobble Game");
         setSize(400, 300);
@@ -15,8 +19,11 @@ public class Modo extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.userName = nombreUsuario;
         initComponent();
-
     }
+
+    /**
+     * Coloca los componenetes en el frame
+     */
     private void initComponent() {
         colocarPaneles();
         colocarLabels();
@@ -28,6 +35,10 @@ public class Modo extends JFrame {
         panel1.setBounds(0,0,100,500);
         panel.add(panel1);
     }
+
+    /**
+     * Coloca los Labels en el panel
+     */
     private void colocarLabels() {
         JLabel etiq1 = new JLabel("Bienvenido " + userName, SwingConstants.CENTER);
         etiq1.setForeground(new Color(0, 0, 0));
@@ -48,10 +59,12 @@ public class Modo extends JFrame {
         panel.add(etiq3);
     }
 
+    /**
+     * Coloca los botones en el panel
+     */
     private void colocarBotones() {
         // Boton crear juego predeterminado
-        JButton btnModo1 = new JButton("User vs User");
-        //JButton btnCrearJuego1 = new JButton("Predeterminado");
+        JButton btnModo1 = new JButton("P vs P");
         btnModo1.setBounds(180,80,130,25);
         ActionListener AccionModoUserVsUser = e -> {
             setVisible(false);
@@ -111,7 +124,9 @@ public class Modo extends JFrame {
         panel.add(btnBack);
     }
 
-
+    /**
+     * Coloca los paneles en el frame
+     */
     private void colocarPaneles(){
         //Panel Principal
         panel = new JPanel();

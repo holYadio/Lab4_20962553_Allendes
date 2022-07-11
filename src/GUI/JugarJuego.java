@@ -12,22 +12,35 @@ public class JugarJuego extends JFrame {
     public JPanel panel;
     public JTextField elementoUser;
 
+    /**
+     * Constructor del Frame
+     * @param dg partida creada
+     * @param nombreUsuario nombre de usuario
+     */
     public JugarJuego(DobbleGame dg, String nombreUsuario){
         super("Dobble Game");
-        setSize(500, 350);
+        this.dobbleGame = dg;
+        this.userName = nombreUsuario;
+        if(dobbleGame.getMode().equals("Demo Mode")){
+            setSize(500, 600);
+        }else{
+            setSize(500, 350);
+        }
+
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         this.getContentPane().setBackground(new Color(217, 188, 67));
-        this.dobbleGame = dg;
-        this.userName = nombreUsuario;
-        initComponent1();
+
+        initComponent();
 
         
     }
 
-
-    private void initComponent1() {
+    /**
+     * Coloca los componenetes en el frame
+     */
+    private void initComponent() {
         colocarPaneles();
         colocarLabels();
         colocarAreaDeTexto();
@@ -36,10 +49,13 @@ public class JugarJuego extends JFrame {
         //Panel decorativo
         JPanel panel1 = new JPanel();
         panel1.setBackground(new Color(234, 184, 35));
-        panel1.setBounds(0,0,100,350);
+        panel1.setBounds(0,0,100,600);
         panel.add(panel1);
     }
 
+    /**
+     * Coloca los labels en el panel
+     */
     private void colocarLabels() {
 
         ImageIcon imagen = new ImageIcon("logoDobble.png");
@@ -69,10 +85,9 @@ public class JugarJuego extends JFrame {
         panel.add(etiq3);
     }
 
-
-
-
-
+    /**
+     * Coloca los paneles en el frame
+     */
     private void colocarPaneles(){
         //Panel Principal
         panel = new JPanel();
@@ -80,6 +95,10 @@ public class JugarJuego extends JFrame {
         this.getContentPane().add(panel);
         panel.setLayout(null);
     }
+
+    /**
+     * Coloca las areas de texto en el panel
+     */
     private void colocarAreaDeTexto(){
         if( dobbleGame.getDobble().numCards() >1){
             dobbleGame.ponerCartasEnMesa();
@@ -133,14 +152,14 @@ public class JugarJuego extends JFrame {
             elementoUser.setOpaque(false);
             panel.add(elementoUser);
         }
-
         panel.add(txt1);
         panel.add(txt2);
         panel.add(txt3);
-
-
-
     }
+
+    /**
+     * Coloca los botones en el panel
+     */
     private void colocarBotones() {
         if(dobbleGame.getMode().equals("Demo Mode")){
             // Boton crear juego predeterminado

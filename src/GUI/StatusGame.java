@@ -9,6 +9,11 @@ import java.awt.event.ActionListener;
 public class StatusGame extends JFrame{
     public DobbleGame dobbleGame;
     public JPanel panel;
+
+    /**
+     * Constructor del frame
+     * @param dg juego creado
+     */
     public StatusGame(DobbleGame dg){
         super("Dobble Game");
         setSize(400, 500);
@@ -19,6 +24,10 @@ public class StatusGame extends JFrame{
         this.dobbleGame = dg;
         initComponent();
     }
+
+    /**
+     * Coloca los componenetes en el frame
+     */
     private void initComponent() {
         colocarPaneles();
         colocarLabels();
@@ -32,6 +41,9 @@ public class StatusGame extends JFrame{
         panel.add(panel1);
     }
 
+    /**
+     * Coloca los labels en el panel
+     */
     private void colocarLabels() {
         ImageIcon imagen = new ImageIcon("logoDobble.png");
         JLabel etiq1 = new JLabel();
@@ -41,7 +53,9 @@ public class StatusGame extends JFrame{
         panel.add(etiq1);
     }
 
-
+    /**
+     * Coloca los botones en el panel
+     */
     private void colocarBotones() {
         // Boton para volver al menu anterior
         ImageIcon imagen2 = new ImageIcon("back.png");
@@ -56,16 +70,20 @@ public class StatusGame extends JFrame{
         panel.add(btnBack);
     }
 
-
+    /**
+     * Coloca los paneles en el frame
+     */
     private void colocarPaneles(){
         //Panel Principal
         panel = new JPanel();
         panel.setBackground(new Color(180, 48, 159));
         this.getContentPane().add(panel);
         panel.setLayout(null);
-
-
     }
+
+    /**
+     * Coloca las areas de texto en el panel
+     */
     private void colocarAreaDeTexto(){
         JTextArea txt1 = new JTextArea();
         txt1.setText(dobbleGame.toString());

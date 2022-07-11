@@ -7,6 +7,11 @@ import java.awt.event.ActionListener;
 public class Final extends JFrame {
     public String ganador;
     public JPanel panel;
+
+    /**
+     * Constructor del frame
+     * @param winner ganador de la partida
+     */
     public Final(String winner){
         super("Dobble Game");
         setSize(500, 150);
@@ -17,6 +22,10 @@ public class Final extends JFrame {
         this.ganador = winner;
         initComponent1();
     }
+
+    /**
+     * Funcion que coloca los componentes en el panel
+     */
     private void initComponent1() {
         colocarPaneles();
         colocarLabels();
@@ -41,6 +50,10 @@ public class Final extends JFrame {
         panel1.setBounds(0,0,100,600);
         panel.add(panel1);
     }
+
+    /**
+     * Agrega los paneles al frame
+     */
     private void colocarPaneles(){
         //Panel Principal
         panel = new JPanel();
@@ -48,6 +61,10 @@ public class Final extends JFrame {
         this.getContentPane().add(panel);
         panel.setLayout(null);
     }
+
+    /**
+     * Coloca los Labels al panel
+     */
     private void colocarLabels() {
         ImageIcon imagen = new ImageIcon("logoDobble.png");
         JLabel etiq1 = new JLabel();

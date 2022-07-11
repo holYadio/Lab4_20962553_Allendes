@@ -12,6 +12,12 @@ public class CrearMazo extends JFrame{
     public String userName;
     public String mode;
     public JPanel panel;
+
+    /**
+     * Constructor del frame
+     * @param nombreUsuario nombre de usuario
+     * @param modo modo de juego
+     */
     public CrearMazo(String nombreUsuario, String modo){
         super("Dobble Game");
         setSize(500, 300);
@@ -23,7 +29,9 @@ public class CrearMazo extends JFrame{
         initComponent();
 
     }
-
+    /**
+     * Coloca los componentes en el frame
+     */
     private void initComponent() {
         colocarPaneles();
         colocarLabels();
@@ -37,6 +45,9 @@ public class CrearMazo extends JFrame{
         panel.add(panel1);
     }
 
+    /**
+     * Coloca los Labels al panel
+     */
     private void colocarLabels() {
         JLabel etiq1 = new JLabel("Bienvenido " + userName, SwingConstants.CENTER);
         etiq1.setForeground(new Color(0, 0, 0));
@@ -58,7 +69,9 @@ public class CrearMazo extends JFrame{
         panel.add(etiq3);
     }
 
-
+    /**
+     * Coloca los botones al panel
+     */
     private void colocarBotones() {
         // Boton crear juego predeterminado
         JButton btnCrearJuego1 = new JButton("Predeterminado");
@@ -133,7 +146,9 @@ public class CrearMazo extends JFrame{
 
     }
 
-
+    /**
+     * Coloca los paneles al frame
+     */
     private void colocarPaneles(){
         //Panel Principal
         panel = new JPanel();
@@ -143,7 +158,9 @@ public class CrearMazo extends JFrame{
 
 
     }
-
+    /**
+     * Coloca las áreas de texto al panel
+     */
     private void colocarAreaDeTexto(){
         JTextArea txt1 = new JTextArea();
         txt1.setText("""
